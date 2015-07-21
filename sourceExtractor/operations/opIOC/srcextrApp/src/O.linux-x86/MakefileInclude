@@ -1,0 +1,240 @@
+#Do not modify this file.
+#This file is created during the build.
+
+ifneq ($(strip $(srcextrSncProg_SRCS_$(OS_CLASS))),)
+srcextrSncProg_SRCS+=$(subst -nil-,,$(srcextrSncProg_SRCS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_SRCS_DEFAULT
+srcextrSncProg_SRCS+=$(srcextrSncProg_SRCS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextrSncProg_RCS_$(OS_CLASS))),)
+srcextrSncProg_RCS+=$(subst -nil-,,$(srcextrSncProg_RCS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_RCS_DEFAULT
+srcextrSncProg_RCS+=$(srcextrSncProg_RCS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextrSncProg_OBJS_$(OS_CLASS))),)
+srcextrSncProg_OBJS+=$(subst -nil-,,$(srcextrSncProg_OBJS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_OBJS_DEFAULT
+srcextrSncProg_OBJS+=$(srcextrSncProg_OBJS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextrSncProg_LDFLAGS_$(OS_CLASS))),)
+srcextrSncProg_LDFLAGS+=$(subst -nil-,,$(srcextrSncProg_LDFLAGS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_LDFLAGS_DEFAULT
+srcextrSncProg_LDFLAGS+=$(srcextrSncProg_LDFLAGS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextrSncProg_OBJLIBS_$(OS_CLASS))),)
+srcextrSncProg_OBJLIBS+=$(subst -nil-,,$(srcextrSncProg_OBJLIBS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_OBJLIBS_DEFAULT
+srcextrSncProg_OBJLIBS+=$(srcextrSncProg_OBJLIBS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextrSncProg_LDOBJS_$(OS_CLASS))),)
+srcextrSncProg_LDOBJS+=$(subst -nil-,,$(srcextrSncProg_LDOBJS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_LDOBJS_DEFAULT
+srcextrSncProg_LDOBJS+=$(srcextrSncProg_LDOBJS_DEFAULT)
+endif
+endif
+srcextrSncProg_LDLIBS+=$(srcextrSncProg_LIBS)
+ifneq ($(strip $(srcextrSncProg_LIBS_$(OS_CLASS))),)
+srcextrSncProg_LDLIBS+=$(subst -nil-,,$(srcextrSncProg_LIBS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_LIBS_DEFAULT
+srcextrSncProg_LDLIBS+=$(srcextrSncProg_LIBS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextrSncProg_SYS_LIBS_$(OS_CLASS))),)
+srcextrSncProg_SYS_LIBS+=$(subst -nil-,,$(srcextrSncProg_SYS_LIBS_$(OS_CLASS)))
+else
+ifdef srcextrSncProg_SYS_LIBS_DEFAULT
+srcextrSncProg_SYS_LIBS+=$(srcextrSncProg_SYS_LIBS_DEFAULT)
+endif
+endif
+srcextrSncProg_OBJS+=$(addsuffix $(OBJ),$(basename $(srcextrSncProg_SRCS)))
+
+ifeq ($(filter srcextrSncProg,$(TESTPROD) $(PROD)),srcextrSncProg)
+ifeq (,$(strip $(srcextrSncProg_OBJS) $(PRODUCT_OBJS)))
+srcextrSncProg_OBJS+=srcextrSncProg$(OBJ)
+endif
+srcextrSncProg_RESS+=$(addsuffix $(RES),$(basename $(srcextrSncProg_RCS)))
+srcextrSncProg_OBJSNAME+=$(addsuffix $(OBJ),$(basename $(srcextrSncProg_OBJS)))
+srcextrSncProg_DEPLIBS=$(foreach lib, $(srcextrSncProg_LDLIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+srcextrSncProg$(EXE): $(srcextrSncProg_OBJSNAME) $(srcextrSncProg_RESS) $(srcextrSncProg_DEPLIBS)
+endif
+
+ifeq ($(filter srcextrSncProg,$(LIBRARY)),srcextrSncProg)
+ifneq ($(filter srcextrSncProg,$(LOADABLE_LIBRARY)),srcextrSncProg)
+ifneq (,$(strip $(srcextrSncProg_OBJS) $(LIBRARY_OBJS)))
+BUILD_LIBRARY += srcextrSncProg
+endif
+srcextrSncProg_RESS+=$(addsuffix $(RES),$(basename $(srcextrSncProg_RCS)))
+srcextrSncProg_OBJSNAME+=$(addsuffix $(OBJ),$(basename $(srcextrSncProg_OBJS)))
+srcextrSncProg_DEPLIBS=$(foreach lib, $(srcextrSncProg_LDLIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+srcextrSncProg_DLL_DEPLIBS=$(foreach lib, $(srcextrSncProg_DLL_LIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+$(LIB_PREFIX)srcextrSncProg$(LIB_SUFFIX):$(srcextrSncProg_OBJSNAME) $(srcextrSncProg_RESS)
+$(LIB_PREFIX)srcextrSncProg$(LIB_SUFFIX):$(srcextrSncProg_DEPLIBS)
+$(LIB_PREFIX)srcextrSncProg$(SHRLIB_SUFFIX):$(srcextrSncProg_OBJSNAME) $(srcextrSncProg_RESS)
+$(LIB_PREFIX)srcextrSncProg$(SHRLIB_SUFFIX):$(srcextrSncProg_DEPLIBS)
+$(LIB_PREFIX)srcextrSncProg$(SHRLIB_SUFFIX):$(srcextrSncProg_DLL_DEPLIBS)
+endif
+endif
+ifeq ($(filter srcextrSncProg,$(LOADABLE_LIBRARY)),srcextrSncProg)
+ifneq (,$(strip $(srcextrSncProg_OBJS) $(LIBRARY_OBJS)))
+LOADABLE_BUILD_LIBRARY += srcextrSncProg
+endif
+srcextrSncProg_RESS+=$(addsuffix $(RES),$(basename $(srcextrSncProg_RCS)))
+srcextrSncProg_OBJSNAME+=$(addsuffix $(OBJ),$(basename $(srcextrSncProg_OBJS)))
+srcextrSncProg_DEPLIBS=$(foreach lib, $(srcextrSncProg_LDLIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+srcextrSncProg_DLL_DEPLIBS=$(foreach lib, $(srcextrSncProg_DLL_LIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+$(LOADABLE_SHRLIB_PREFIX)srcextrSncProg$(LOADABLE_SHRLIB_SUFFIX):$(srcextrSncProg_OBJSNAME) $(srcextrSncProg_RESS)
+$(LOADABLE_SHRLIB_PREFIX)srcextrSncProg$(LOADABLE_SHRLIB_SUFFIX):$(srcextrSncProg_DEPLIBS)
+$(LOADABLE_SHRLIB_PREFIX)srcextrSncProg$(LOADABLE_SHRLIB_SUFFIX):$(srcextrSncProg_DLL_DEPLIBS)
+endif
+
+
+ifneq ($(strip $(srcextr_SRCS_$(OS_CLASS))),)
+srcextr_SRCS+=$(subst -nil-,,$(srcextr_SRCS_$(OS_CLASS)))
+else
+ifdef srcextr_SRCS_DEFAULT
+srcextr_SRCS+=$(srcextr_SRCS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextr_RCS_$(OS_CLASS))),)
+srcextr_RCS+=$(subst -nil-,,$(srcextr_RCS_$(OS_CLASS)))
+else
+ifdef srcextr_RCS_DEFAULT
+srcextr_RCS+=$(srcextr_RCS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextr_OBJS_$(OS_CLASS))),)
+srcextr_OBJS+=$(subst -nil-,,$(srcextr_OBJS_$(OS_CLASS)))
+else
+ifdef srcextr_OBJS_DEFAULT
+srcextr_OBJS+=$(srcextr_OBJS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextr_LDFLAGS_$(OS_CLASS))),)
+srcextr_LDFLAGS+=$(subst -nil-,,$(srcextr_LDFLAGS_$(OS_CLASS)))
+else
+ifdef srcextr_LDFLAGS_DEFAULT
+srcextr_LDFLAGS+=$(srcextr_LDFLAGS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextr_OBJLIBS_$(OS_CLASS))),)
+srcextr_OBJLIBS+=$(subst -nil-,,$(srcextr_OBJLIBS_$(OS_CLASS)))
+else
+ifdef srcextr_OBJLIBS_DEFAULT
+srcextr_OBJLIBS+=$(srcextr_OBJLIBS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextr_LDOBJS_$(OS_CLASS))),)
+srcextr_LDOBJS+=$(subst -nil-,,$(srcextr_LDOBJS_$(OS_CLASS)))
+else
+ifdef srcextr_LDOBJS_DEFAULT
+srcextr_LDOBJS+=$(srcextr_LDOBJS_DEFAULT)
+endif
+endif
+srcextr_LDLIBS+=$(srcextr_LIBS)
+ifneq ($(strip $(srcextr_LIBS_$(OS_CLASS))),)
+srcextr_LDLIBS+=$(subst -nil-,,$(srcextr_LIBS_$(OS_CLASS)))
+else
+ifdef srcextr_LIBS_DEFAULT
+srcextr_LDLIBS+=$(srcextr_LIBS_DEFAULT)
+endif
+endif
+ifneq ($(strip $(srcextr_SYS_LIBS_$(OS_CLASS))),)
+srcextr_SYS_LIBS+=$(subst -nil-,,$(srcextr_SYS_LIBS_$(OS_CLASS)))
+else
+ifdef srcextr_SYS_LIBS_DEFAULT
+srcextr_SYS_LIBS+=$(srcextr_SYS_LIBS_DEFAULT)
+endif
+endif
+srcextr_OBJS+=$(addsuffix $(OBJ),$(basename $(srcextr_SRCS)))
+
+ifeq ($(filter srcextr,$(TESTPROD) $(PROD)),srcextr)
+ifeq (,$(strip $(srcextr_OBJS) $(PRODUCT_OBJS)))
+srcextr_OBJS+=srcextr$(OBJ)
+endif
+srcextr_RESS+=$(addsuffix $(RES),$(basename $(srcextr_RCS)))
+srcextr_OBJSNAME+=$(addsuffix $(OBJ),$(basename $(srcextr_OBJS)))
+srcextr_DEPLIBS=$(foreach lib, $(srcextr_LDLIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+srcextr$(EXE): $(srcextr_OBJSNAME) $(srcextr_RESS) $(srcextr_DEPLIBS)
+endif
+
+ifeq ($(filter srcextr,$(LIBRARY)),srcextr)
+ifneq ($(filter srcextr,$(LOADABLE_LIBRARY)),srcextr)
+ifneq (,$(strip $(srcextr_OBJS) $(LIBRARY_OBJS)))
+BUILD_LIBRARY += srcextr
+endif
+srcextr_RESS+=$(addsuffix $(RES),$(basename $(srcextr_RCS)))
+srcextr_OBJSNAME+=$(addsuffix $(OBJ),$(basename $(srcextr_OBJS)))
+srcextr_DEPLIBS=$(foreach lib, $(srcextr_LDLIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+srcextr_DLL_DEPLIBS=$(foreach lib, $(srcextr_DLL_LIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+$(LIB_PREFIX)srcextr$(LIB_SUFFIX):$(srcextr_OBJSNAME) $(srcextr_RESS)
+$(LIB_PREFIX)srcextr$(LIB_SUFFIX):$(srcextr_DEPLIBS)
+$(LIB_PREFIX)srcextr$(SHRLIB_SUFFIX):$(srcextr_OBJSNAME) $(srcextr_RESS)
+$(LIB_PREFIX)srcextr$(SHRLIB_SUFFIX):$(srcextr_DEPLIBS)
+$(LIB_PREFIX)srcextr$(SHRLIB_SUFFIX):$(srcextr_DLL_DEPLIBS)
+endif
+endif
+ifeq ($(filter srcextr,$(LOADABLE_LIBRARY)),srcextr)
+ifneq (,$(strip $(srcextr_OBJS) $(LIBRARY_OBJS)))
+LOADABLE_BUILD_LIBRARY += srcextr
+endif
+srcextr_RESS+=$(addsuffix $(RES),$(basename $(srcextr_RCS)))
+srcextr_OBJSNAME+=$(addsuffix $(OBJ),$(basename $(srcextr_OBJS)))
+srcextr_DEPLIBS=$(foreach lib, $(srcextr_LDLIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+srcextr_DLL_DEPLIBS=$(foreach lib, $(srcextr_DLL_LIBS),\
+ $(firstword $(wildcard $(addsuffix /$(LIB_PREFIX)$(lib).*,\
+ $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS)))\
+ $(addsuffix /$(LIB_PREFIX)$(lib)$(LIB_SUFFIX),\
+ $(firstword $($(lib)_DIR) $(SHRLIB_SEARCH_DIRS))/)))
+$(LOADABLE_SHRLIB_PREFIX)srcextr$(LOADABLE_SHRLIB_SUFFIX):$(srcextr_OBJSNAME) $(srcextr_RESS)
+$(LOADABLE_SHRLIB_PREFIX)srcextr$(LOADABLE_SHRLIB_SUFFIX):$(srcextr_DEPLIBS)
+$(LOADABLE_SHRLIB_PREFIX)srcextr$(LOADABLE_SHRLIB_SUFFIX):$(srcextr_DLL_DEPLIBS)
+endif
+

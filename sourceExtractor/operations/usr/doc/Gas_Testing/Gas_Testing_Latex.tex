@@ -1,0 +1,1286 @@
+\documentclass[11pt]{book}		% drafthead style seems not to work w\book
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{color}
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%\lhead{\today}
+\setlength{\oddsidemargin}{0.50in}	% Note binding-side margin is wider,
+\setlength{\evensidemargin}{0.00in}	% unlike Lamport's defaults
+\setlength{\topmargin}{0.0in}
+\setlength{\textheight}{8.0in}
+\setlength{\textwidth}{6.0in}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.5cm}
+
+
+
+\title{CLINICAL NEUTRON THERAPY SYSTEM\\
+	Control System Specification 1.0\\[1.0cm]}
+%         Beam Diagnostics and Status Display \\[1.0cm]}
+%        Includes Operator Interface Overview, Status Terminal, Operatons Terminal, Equipment Control Overview, Magnet System Control, Extraction System Control, Beam Diagnostics System Control, Safety System, Control System\\[1.0cm]}
+
+
+\author{Robert Emery\\
+	Ruedi Risler\\
+	Dave Reid \\
+	Mat Hicks \\
+        Jonathan Jacky}
+%	\\ 
+%	Jonathan Unger \\
+%	Stan Brossard \\ [0.5cm]
+%	Radiation Oncology Department \\
+%	University of Washington\\
+%	Seattle, WA  98195 \\[0.5cm]
+%	Technical Report 92-05-01
+
+\date{\today}
+
+\begin{document}
+
+
+\chapter{Ion Source Equipment Testing}
+
+\vspace*{-.75in}
+\today \\
+\vspace*{.75in}
+\\
+
+\section{Source Arc Power Supply}
+
+\subsection{State Controls}
+
+\begin{enumerate}
+ \item PSARC (ON,OFF) (On indicates that the high voltage is on.  Off indicates that the high voltage is off)
+
+\color{red}
+1) Press the On button in the operations console. Observe the following: 
+	Does the PS come on? 
+	Does Source:Arc:On:Status go from zero to 1 when you do this? 
+	Does Source:Arc:Condition:Initializing:Status get set to 1 then 0?
+	Does Source:Arc:Reset:Interlocks:Write go to 1, then 0 again?
+
+2) Set Source:CommError:Status and Source:HardwareError:Status to false, then turn on and see if this clears.
+
+4) Does pressing the Off button at the operations console turn off the PS? When you press off, does the "Shutting Down" light flash in both the operations and status display?
+
+5) On the Operations Console, and Status display, observe that PREAD says zero for PSARC when the PS is off.
+
+6) Place the device in local mode, and attempt to turn on the PS from EPICS. You shouldn't be able to do this.
+
+7) When you turn on the device locally, make sure Source:Condition:Initializing:Status gets set to 1 then 0.
+
+
+\color{black}
+
+
+ \item Source Initialize (Includes both PS Arc and Gas Control. Disabled when RF on.)
+
+
+\color{red}
+
+Press the Initialize button in the operations console and observe the following:
+	Does the PV Source:Condition:Initializing:Status go from 0 to 1, then back to 0 during this process? 
+	Ensure that it flashes "Initializing" in Yellow on the operations and status display screen. 
+
+Try setting Set Source:CommError:Status and Source:HardwareError:Status to false, then press Initialize and see if they go back to true.
+With the RF on and 0 cathode current, and verify that you cannot press the Initialize button. Then type caput Source:Init:String.PROC 1 and verify the the PS does not initialize (you should see a message ''can't initialize, beam on'' or something like that. Also, the button color should change
+
+\color{black}
+
+
+
+ \item Source Reset (Includes both PS Arc and Gas Control)
+
+
+\color{red}
+
+With the PSARC Off and in remote mode, turn off the cooling water. Verify that Device Interlock shows up in ops dipslay, and that he status display terminal shows the two cooilng interlcoks. Try turning on the PSARC, and verify that you are prevented from doing so, and the appropriate message (the 2 cooing interlocks) appears in the message board. Try turning the PSARC on locally, and verify that it won't go on. Then turn the water back on and observe that the PS cooling interlocks still exist. Then, press the Reset button on the operations console, and observe the interlocks clear on both screens, and that you can now turn on the PSARC.
+
+\color{black}
+
+
+ \item Dose Rate Servo (ON/OFF)
+\end{enumerate}
+
+\subsubsection{Dose Rate Servo (ON/OFF)}
+
+During a standard therapy treatment run a feedback loop from the Dose Monitor Controller (DMC) keeps the dose rate constant.  An analog feedback signal to the PSARC controls the PSARC output current and thus the dose rate.  There are times, such as when there are higher than normal beam losses, that it is preferred to manually control the PSARC output current (and dose rate) without the feedback effect from the DMC.  This is accomplished by providing a control at the Cyclotron Control Console that can disconnect the DMC feedback signal from the PSARC control and thus turn off the DMC Dose Rate Servo signal.
+
+\color{red}
+
+Not in EPICS system.
+
+\color{black}
+
+
+\subsubsection{Standby 1 to Standby 2 Transition}
+
+When the system is commanded to transition to the Standby 2 state as described in section \ref{sect:cyc-equip-ctl-controls-system-coordination-standby} the PSARC is turned on.
+
+\color{red}
+
+Have to just make sure it goes up the first time they hit SB2.
+
+\color{black}
+
+\subsubsection{Standby 2 to Standby 1 Transition}
+
+When the system is commanded to transition to the Standby 2 state as described in section \ref{sect:cyc-equip-ctl-controls-system-coordination-standby} the PSARC is turned off.
+
+\color{red}
+
+Have to just make sure it turns off the first time they hit SB1.
+
+\color{black}
+
+\subsection{State Monitors}
+
+\begin{enumerate}
+ \item Control Voltage (MOD1PS-13) Status
+
+\color{red}
+Does it exist it status display?
+\color{black}
+
+ \item Spellman Control Power (On,Off)
+
+\color{red}
+Does it exist in status display? Turn off Spellman Control Power on front panel of PS and see if it shows up in status display.
+\color{black}
+
+ \item PSARC Main Key (On,Off)
+
+\color{red}
+When the main key is turned up in teh PS, does this show up in the status screen?
+\color{black}
+
+ \item PSARC (ON,OFF) (On indicates that the high voltage is on.  Off indicates that the high voltage is off)
+
+\color{red}
+On status and Ops, does Spellman show up as being on?
+\color{black}
+
+ \item PSARC at Power Limit
+
+\color{red}
+Is this a bit in status display?
+\color{black}
+
+ \item Potential Short in Source (When calculated resistance is close to 20 k$\Omega$ for N=1 and 2 k$\Omega$ for N=2)
+
+\color{red}
+Is this a bit in status display?
+\color{black}
+
+ \item Current > 200 mA (For Proton Beam Only)
+
+\color{red}
+Is this a bit in status display?
+\color{black}
+
+ \item Dose Rate Servo (ON,OFF)
+
+\color{red}
+Is this a bit in status display?
+\color{black}
+
+ \item HV Source Selection Switch (N=1,N=2)
+
+\color{red}
+When you switch between N=1 and N=2 when the switch in the vault, does it change in status display? N=1 is easy to check.
+\color{black}
+
+ \item Source Communication Error (Includes both PS Arc and Gas Control)
+
+\color{red}
+I don't know how to trigger a comm error. You can manually set the bit to 1, and see if iniitiliazing, or turning on clears it (should have already done this).
+\color{black}
+
+ \item Source Initializing (Includes both PS Arc and Gas Control)
+
+\color{red}
+Does this show up in ops and status display when you click initialize?
+\color{black}
+
+ \item PS Arc Shutting Down
+
+\color{red}
+Does Shutting down flash in ops and status display?
+\color{black}
+
+ \item Source Watchdog (Includes both PS Arc and Gas Control)
+
+\color{red}
+Set Source:Heartbeat.SDIS to 1, to disable heartbeat. Should see this come up in ops and status display. Reset Source:Heartbeat.SDIS to 0. Verify display doesn't go away. Verify that this interlock shuts off the beam. Verify that you need to initilizae to clear.
+\color{black}
+
+ \item Upper Source Cooling
+
+\color{red}
+Turn the water off and then verify that you can't turn on the PS (EPICS, or locally) when the water is off. Should see Red Interlock in ops, and specific message in status. Need to see a message in the log when you try to turn on. When you turn the water back on, does the interlock stay in? If so, see if reset clears.
+\color{black}
+
+ \item Lower Source Cooling
+
+\color{red}
+Turn the water off and then verify that you can't turn on the PS (EPICS, or locally) when the water is off. Should see Red Interlock in ops, and specific message in status. Need to see a message in the log when you try to turn on. When you turn the water back on, does the interlock stay in? If so, see if reset clears.
+\color{black}
+
+ \item Upper Cathode in Position
+
+\color{red}
+Don't know how to trigger this one.
+\color{black}
+
+ \item Lower Cathode in Position
+
+\color{red}
+Don't know how to trigger this one.
+\color{black}
+
+ \item Resistor Box Cover
+
+\color{red}
+Could take the resistor box cover off, and try to turn on. Locally and in EPICS. Should see message in log. Should else see Red Interlock in ops, and specific in status.
+\color{black}
+
+ \item Therapy Room Emergency Loop
+
+\color{red}
+Could push the button? Maybe not cause that dumps power. Then try to turn on. Locally and in EPICS. Should see message in log. Should else see Red Interlock in ops, and specific in status.
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Device Interlocks}
+
+PSARC Device Interlocks:
+(Occurrence of interlock will turn off the PSARC and not allow the PSARC to be turned on)
+
+\begin{enumerate}
+ \item Upper Source Cooling - Reset to Remove Latch
+
+\color{red}
+Turn the water off and then verify that you can't turn on the PS (EPICS, or locally) when the water is off. Should see Red Interlock in ops, and specific message in status. Need to see a message in the log when you try to turn on. When you turn the water back on, does the interlock stay in? If so, see if reset clears.
+\color{black}
+
+ \item Lower Source Cooling - Reset to Remove Latch
+
+\color{red}
+Turn the water off and then verify that you can't turn on the PS (EPICS, or locally) when the water is off. Should see Red Interlock in ops, and specific message in status. Need to see a message in the log when you try to turn on. When you turn the water back on, does the interlock stay in? If so, see if reset clears.
+\color{black}
+
+ \item Upper Cathode in Position - Reset to Remove Latch
+
+\color{red}
+This would require taking the cathode out of position, then doing the same thing as for the lower source cooling.
+\color{black}
+
+ \item Lower Cathode in Position - Reset to Remove Latch
+
+\color{red}
+This would require taking the cathode out of position, then doing the same thing as for the lower source cooling..
+\color{black}
+
+ \item Resistor Box Cover - Reset to Remove Latch
+
+\color{red}
+This would require taking off the resistor box cover, then doing the same thing as for the lower source cooling.
+\color{black}
+
+ \item Therapy Room Emergency Loop - Reset to Remove Latch
+
+\color{red}
+Not sure if you want to push that button and check the above, b/c it dumps all the power? Maybe not. Maybe this button isn't installed.
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Particle Beam Interlocks}
+
+PSARC Particle Beam Interlocks:
+(Occurrence of interlock will prevent RF system from attempting to accelerate a particle beam)
+(Items in italics are detected in the IOC and sent to the PLC as part of the PSARC No Fault/No Error information)
+
+\begin{enumerate}
+ \item PSARC Power Supply Off - Non-latching
+
+\color{red}
+Check that this is coded into the PLC.
+\color{black}
+
+ \item HV Source Selection Switch Incorrect for Particle Selected - Non-latching
+
+\color{red}
+I don't know how to throw this interlock.
+\color{black}
+
+ \item Source Watchdog - Initialize to Remove Latch (Includes both PS Arc and Gas Control)
+
+\color{red}
+Set Source:Heartbeat.SDIS to 1, to disable heartbeat. Verify that this interlock shuts off the beam. Write Source:Heartbeat.SDIS back to zero.
+\color{black}
+
+ \item PSARC Shutting Down - Non-latching
+
+\color{red}
+Write Source:Condition:ShuttingDown:Status from 0 to 1, and verify that Source:SystemOK:Standby2:Status goes from 1 to 0.
+\color{black}
+
+ \item Source Initializing - Non-latching (Includes both PS Arc and Gas Control)
+
+\color{red}
+Write Source:Condition:Initializing:Status from 0 to 1, and verify that Source:SystemOK:Standby2:Status goes from 1 to 0.
+\color{black}
+
+ \item Source Communication Error - Initialize to remove latch (Includes both PS Arc and Gas Control)
+
+\color{red}
+Write Source:CommError:Status from 0 to 1, and verify that Source:SystemOK:Standby2:Status goes from 1 to 0.
+\color{black}
+
+\end{enumerate}
+Note:  Future implementation may include interlocks for current/voltage/power outside tolerance windows.
+
+\subsection{Safety}
+
+Loss of control of the PSHV may result in an excessive amount of particle beam being produced.  Currently, the only protection against this is provided by the particle beam hardwired safety interlock system (HSIS) (section \ref{sect:cyc-equip-ctl-safety-sys-hsis-beam}) that monitors the particle beam position and beam losses described in section \ref{ch:cyc-equip-ctl-beam-diagnostics}.  In the future we may add additional protection in the control system.  Adding additional protection at this time would require signifigant resources and vased on our 20+ years operating experience we feel that this feature can wait.
+
+\subsection{Analog Control Parameters}
+
+PSET is not handled by the computer control system.  Analog control is done via hardwired potentiometers and direct analog feedback loops.
+
+\begin{enumerate}
+ \item None
+\end{enumerate}
+
+\subsection{Parameter Limits}
+There are no analog parameters limits handled by the computer control system.  All analog control is done via hardwired potentiometers and direct analog feedback loops.
+
+
+\subsection{Analog Display Parameters}
+
+\color{red}
+As far as I know, just make sure the Source current and voltage are being read correctly by the acromag. Those PVs are Source:Arc:Curr:Read and Source:Arc:Volt:Read.
+\color{black}
+
+\begin{enumerate}
+ \item PSARC Voltage PREAD n.nn kV
+ \item PSARC Power PREAD nnnn W
+ \item PSARC Current PREAD nnn mA
+ \item PSARC Current PLOW  nnn mA
+ \item PSARC Current PHIGH nnn mA
+ \item PSARC Circuit Resistance PREAD  n.n k$\Omega$ (Only calculated if PSARC current PREAD $\geq$ 1.0 mA)
+\end{enumerate}
+
+
+\section{Source Gas Handling}
+
+
+\subsection{State Controls}
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+
+\begin{enumerate}
+ \item Particle Type Select (Protons, H2+, Deutrons, 3-Helium, Alpha) (This control is not available for the operator to directly modify at the Cyclotron Control Console.  The particle type is indicated in the particle type saved settings (section \ref{}).
+
+\color{red}
+
+\color{black}
+
+ \item N=1 Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item N=2 Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item Proton Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item H2+ Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item 3-Helium Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item 4-Helium Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item Air Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item SVP Valve (Open,Close)
+
+\color{red}
+Have to see if these are just physical buttons, or also exist in epics...
+\color{black}
+
+ \item Source Initialize (Includes both PS Arc and Gas Control. Disabled when RF on.)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Standby 1 to Standby 2 Transition}
+
+When the system is commanded to transition to the Standby 2 state as described in section \ref{sect:cyc-equip-ctl-controls-system-coordination-standby} the gas manifold is pumped out by the service pump and then the gas selection and chimney valves are opened as required by the particle setting loaded.
+
+\color{red}
+When you press SB2, verify that all this happens.
+\color{black}
+
+\subsubsection{Standby 2 to Standby 1 Transition}
+
+When the system is commanded to transition to the Standby 1 state as described in section \ref{sect:cyc-equip-ctl-controls-system-coordination-standby} the gas selection and chimney valves are closed.
+
+\color{red}
+When you press SB1, verify that all this happens, and that the gas flow Source:Gas:Flow:SendSet goes to 0.
+\color{black}
+
+\subsection{State Monitors}
+
+\begin{enumerate}
+ \item Source Initializing (Includes both PS Arc and Gas Control)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Selection Local
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Selected gas type (Hydrogen, Deuterium, Helium 3, Helium 4, Air, None) (Note: Air may only be selected on the front panel of the gas selection unit and when it is in local.  None is selected when the system is in Standby 1, and may also be selected on the front panel of the gas selection unit and when it is in local.)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Service Pump (On,Off)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Service Pump Gas Manifold Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Communication Error (Includes both PS Arc and Gas Control)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Watchdog (Includes both PS Arc and Gas Control)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Device Interlocks}
+
+Gas Handling System Device Interlocks:
+(Occurrence of interlock will prevent the Gas Handling System from turning on.)
+
+\begin{enumerate}
+\item None
+\end{enumerate}
+
+Gas Valve Device Interlocks:
+(Occurrence of interlock will prevent certain valves on the gas handling manifold from opening. Note: These are all handled in the PLC)
+
+\begin{enumerate}
+ \item Gas Selection Valve Open (Only one gas selection valve may be open at any one time.  The service pump valve may not be opened if a gas selection valve is open.) - Non-latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Chimney Selection Valve Open (Only one chimney valve may be open at any one time.  The service pump valve may not be opened if a chimney valve is open.) - Non-latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Service Pump Valve Open (No gas select valves or chimney valves may be opened if the service pump valve is open) - Non-Latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Cyclotron Vacuum  (No gas select valves or chimney valves may be open if high vacuum is not ok in the cyclotron vacuum tank.) - Non-Latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Particle Beam Interlocks}
+
+Gas Handling System Particle Beam Interlocks:
+(Occurrence of interlock will prevent RF system from attempting to accelerate a particle beam.)
+
+\begin{enumerate}
+ \item Gas Type expected by IOC $\neq$ Gas Type commanded by PLC - Non-latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Chimney Selection Incorrect for Particle Selected - Non-latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Extractor Servo Communication Fault - Initialize to remove latch (Includes both PS Arc and Gas Control)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Servo PREAD $\geq$ PHIGH - Non-latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Servo PREAD $\leq$ PLOW - Non-latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Servo $\mid$PREAD-PSET$\mid$ $\geq$ PDiff - Non-latching
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Watchdog - Initialize to Remove Latch (Includes both PS Arc and Gas Control)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Initializing - Non-latching (Includes both PS Arc and Gas Control)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+
+\subsection{Safety}
+
+
+\subsection{Analog Control Parameters}
+
+\begin{enumerate}
+ \item Gas Flow PSET   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PLOW   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PHIGH  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PDIFF  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PSEN   n
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Parameter Limits}
+
+\begin{enumerate}
+ \item Gas Flow MaxLimit = 10 sccm
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow MinLimit = 0 sccm
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsection{Analog Display Parameters}
+
+\begin{enumerate}
+ \item Gas Flow PSET   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PREAD  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PLOW   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PHIGH  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PDIFF  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PSEN   n
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+
+
+\chapter{Ion Source Operations Console Testing}
+
+\subsection{Ion Source Subsystem Operations}
+
+Control of the Ion Source System is divided into two groups: the Gas Handling System and the Arc Power Supply (PSARC).  The Ion Source System is selected by clicking the virtual ``Ion Source System'' button in the Subsystem Select region of the display.
+
+\subsubsection{Title} \label{sect:cyc-op-interface-ops-terminal-subsys-ops-source-title}
+
+The title of the system will be Ion Source System.  The color of the title bar will be orange.
+
+\paragraph{Draggable Objects}
+
+\begin{enumerate}
+ \item None
+\end{enumerate}
+
+\paragraph{State Controls}
+
+\begin{enumerate}
+ \item Reset Ion Source System
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\paragraph{State Indicators}
+
+\begin{enumerate}
+ \item None
+\end{enumerate}
+
+
+\subsubsection{Arc Power Supply (PSARC) Subsystem Operations}
+
+\paragraph{Draggable Objects}
+
+\begin{enumerate}
+ \item None
+\end{enumerate}
+
+\paragraph{State Controls}
+
+\begin{enumerate}
+ \item (ON,OFF)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Initialize (Button is disabled if device does not have control power or if RF in High Power mode)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\paragraph{State Indicators}
+
+\begin{enumerate}
+ \item (ON,OFF)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Initializing - Flashing Yellow
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Device Interlock - Red
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Communication Fault - Fuchsia
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Process Heartbeat - Fuchsia
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Arc Power Supply (PSARC) Device Operations}
+
+
+Because there are no computer controllable parameters for the PSARC other than On/Off, there is no Device Operations panel associated with the PSARC.
+
+
+\subsubsection{Gas Flow Subsystem Operations}
+
+\paragraph{Draggable Objects}
+
+\begin{enumerate}
+ \item ``Gas Flow'' label. - Will assign Gas Flow parameter to Tuning Module or open Gas Flow Display in Device Operations region.
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\paragraph{State Controls}
+
+\begin{enumerate}
+ \item Initialize (Button is disabled if device does not have control power or if RF in High Power mode)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\paragraph{State Indicators}
+
+\begin{enumerate}
+ \item Gas Select Local
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Initializing - Flashing Yellow
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Device Interlock - Red
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Communication Fault - Fuchsia
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Process Heartbeat - Fuchsia
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Gas Flow Device Operations}
+
+
+\paragraph{Title}
+
+The title of the system will be Gas Flow.  The color of the title bar will be dark purple.
+
+\paragraph{State Controls}
+
+\begin{enumerate}
+\item None
+\end{enumerate}
+
+\paragraph{State Indicators}
+
+\begin{enumerate}
+ \item None
+\end{enumerate}
+
+
+\paragraph{Analog Control Parameters}
+
+\begin{enumerate}
+ \item Gas Flow PSET   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PLOW   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PHIGH  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PDIFF  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PSEN   n
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\paragraph{Analog Display Parameters}
+
+\begin{enumerate}
+ \item Gas Flow PSET   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PREAD  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PLOW   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PHIGH  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PDIFF  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PSEN   n
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+
+
+\chapter{Ion Source Status Testing}
+
+\subsection{Ion Source system}
+
+\subsubsection{Title}
+
+The title of the display is Ion Source System Status.  The color of the title bar is orange.
+
+\subsubsection{Arc Power Supply (PSARC)}
+
+\paragraph{State Monitors}
+
+\begin{enumerate}
+ \item PSARC (ON,OFF)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Initializing
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Shutting Down
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item MOD1PS-13 Voltage Status
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Spellman Control Power (On,Off)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item PSARC Main Key (On,Off)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item High Voltage (ON,OFF)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item PSARC at Power Limit
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Potential Short in Source (When calculated resistance is close to 20 k$\Omega$ for N=1 and 2 k$\Omega$ for N=2)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Current > 200 mA (For Proton Beam Only)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Local
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Dose Rate Servo (ON,OFF)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item HV Source Selection Switch (N=1,N=2)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Upper Source Cooling
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Lower Source Cooling
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Upper Cathode in Position
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Lower Cathode in Position
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Resistor Box Cover
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Therapy Room Emergency Loop
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Heartbeat
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Communication Fault
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+The HV Source Selection should be displayed in a graphical format in a diagram that includes the appropriate series resistors for the two source chimneys. 
+
+\paragraph{Analog Parameters}
+
+
+\begin{enumerate}
+ \item PSARC Voltage PREAD n.nn kV
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item PSARC Power PREAD nnnn W
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item PSARC Current PREAD nn.n mA
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item PSARC Circuit Resistance PREAD  n.n k$\Omega$ (Only calculated if PSARC current PREAD $\geq$ 1.0 mA)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+\subsubsection{Ion Source Gas Handling}
+
+The source gas handling status display is a graphical representation of the source gas subsystem parameters, rather than a display of simple tables and text.  The display is designed in a manner consistent with section~\ref{sect:status-display-conventions} as described in subsection~\ref{sect:status-display-graphical}.  Vacuum components are displayed using the DIN 28 401 standard for vacuum symbols as much as possible.  A general guide to the CNTS Source Gas Handling System is shown in fig. \ref{fig:source-gas-layout}
+
+\newpage
+
+\begin{center}
+
+\begin{figure}[htb]
+%\scalebox{0.5}{\includegraphics{IonSourceGas.pdf}}
+\caption{Source Gas Handling System Layout}
+\label{fig:source-gas-layout}
+\end{figure}
+\end{center}
+
+
+\subsubsection{Source Gas Handling system display conventions}
+
+In order to provide the cyclotron operator with a quick overview of the status of the gas handling system system, gas chambers are displayed pipes or chambers with colors corresponding to the gas in the chamber.  There are four gas types available to the ion source: Hydrogen, Deuterium, Helium-3, and Helium-4.  The color representing each gas should be clearly unique.  Additionally, air may be allowed in the gas handling system and the system may be pumped out with the service pump.  Air should be indicated with whatever color is used for the background of the display.  The chamber should be displayed as white while it is being pumped down.  Any pipe or chamber to which all valves are closed should be displayed as black indicating that the section of pipe or chamber is not in use. 
+
+
+
+\paragraph{State Monitors}
+
+\begin{enumerate}
+ \item Particle Type Select (Protons, H2+, Deuterons, 3-Helium, Alphas)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Local
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Hydrogen Gas Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Deuterium Gas Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Helium 3 Gas Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Helium 4 Gas Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Air Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item N=1 Chimney Gas Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item N=1 Chimney Gas Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Service Pump Valve (Open,Closed)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Service Pump (On,Off)
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Heartbeat - Initialize to remove latch
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Source Communication Fault - Initialize to remove latch
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Initializing
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+
+\paragraph{Analog Parameters}
+
+\begin{enumerate}
+ \item Gas Flow PSET   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PREAD  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PLOW   nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PHIGH  nn.nn SCCM
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+ \item Gas Flow PREAD n.nn ccm
+
+\color{red}
+This button was tested above, I believe
+\color{black}
+
+\end{enumerate}
+
+
+\end{document}

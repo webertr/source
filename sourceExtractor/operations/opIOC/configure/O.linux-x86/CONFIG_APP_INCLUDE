@@ -1,0 +1,75 @@
+# Do not modify this file, changes made here will
+# be lost when the application is next rebuilt.
+
+export TOP
+export SSCAN
+export SNCSEQ
+export ASYN
+export ASYNCVS
+export CALC
+export GENSUB
+export STREAMDEVICE
+export MODBUS
+export EPICS_BASE
+SNCSEQ_HOST_BIN = $(strip $(SNCSEQ))/bin/$(EPICS_HOST_ARCH)
+ASYN_HOST_BIN = $(strip $(ASYN))/bin/$(EPICS_HOST_ARCH)
+CALC_HOST_BIN = $(strip $(CALC))/bin/$(EPICS_HOST_ARCH)
+GENSUB_HOST_BIN = $(strip $(GENSUB))/bin/$(EPICS_HOST_ARCH)
+STREAMDEVICE_HOST_BIN = $(strip $(STREAMDEVICE))/bin/$(EPICS_HOST_ARCH)
+MODBUS_HOST_BIN = $(strip $(MODBUS))/bin/$(EPICS_HOST_ARCH)
+EPICS_BASE_HOST_BIN = $(strip $(EPICS_BASE))/bin/$(EPICS_HOST_ARCH)
+SSCAN_HOST_LIB = $(strip $(SSCAN))/bin/$(EPICS_HOST_ARCH)
+SNCSEQ_HOST_LIB = $(strip $(SNCSEQ))/bin/$(EPICS_HOST_ARCH)
+ASYN_HOST_LIB = $(strip $(ASYN))/bin/$(EPICS_HOST_ARCH)
+CALC_HOST_LIB = $(strip $(CALC))/bin/$(EPICS_HOST_ARCH)
+GENSUB_HOST_LIB = $(strip $(GENSUB))/bin/$(EPICS_HOST_ARCH)
+STREAMDEVICE_HOST_LIB = $(strip $(STREAMDEVICE))/bin/$(EPICS_HOST_ARCH)
+MODBUS_HOST_LIB = $(strip $(MODBUS))/bin/$(EPICS_HOST_ARCH)
+EPICS_BASE_HOST_LIB = $(strip $(EPICS_BASE))/bin/$(EPICS_HOST_ARCH)
+SNCSEQ_BIN = $(strip $(SNCSEQ))/bin/linux-x86
+ASYN_BIN = $(strip $(ASYN))/bin/linux-x86
+CALC_BIN = $(strip $(CALC))/bin/linux-x86
+GENSUB_BIN = $(strip $(GENSUB))/bin/linux-x86
+STREAMDEVICE_BIN = $(strip $(STREAMDEVICE))/bin/linux-x86
+MODBUS_BIN = $(strip $(MODBUS))/bin/linux-x86
+EPICS_BASE_BIN = $(strip $(EPICS_BASE))/bin/linux-x86
+SSCAN_LIB = $(strip $(SSCAN))/lib/linux-x86
+SNCSEQ_LIB = $(strip $(SNCSEQ))/lib/linux-x86
+ASYN_LIB = $(strip $(ASYN))/lib/linux-x86
+CALC_LIB = $(strip $(CALC))/lib/linux-x86
+GENSUB_LIB = $(strip $(GENSUB))/lib/linux-x86
+STREAMDEVICE_LIB = $(strip $(STREAMDEVICE))/lib/linux-x86
+MODBUS_LIB = $(strip $(MODBUS))/lib/linux-x86
+EPICS_BASE_LIB = $(strip $(EPICS_BASE))/lib/linux-x86
+SHRLIB_SEARCH_DIRS += $(SSCAN_LIB)
+SHRLIB_SEARCH_DIRS += $(SNCSEQ_LIB)
+SHRLIB_SEARCH_DIRS += $(ASYN_LIB)
+SHRLIB_SEARCH_DIRS += $(CALC_LIB)
+SHRLIB_SEARCH_DIRS += $(GENSUB_LIB)
+SHRLIB_SEARCH_DIRS += $(STREAMDEVICE_LIB)
+SHRLIB_SEARCH_DIRS += $(MODBUS_LIB)
+SHRLIB_SEARCH_DIRS += $(EPICS_BASE_LIB)
+RELEASE_INCLUDES += -I$(strip $(SSCAN))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(SSCAN))/include
+RELEASE_INCLUDES += -I$(strip $(SNCSEQ))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(SNCSEQ))/include
+RELEASE_INCLUDES += -I$(strip $(ASYN))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(ASYN))/include
+RELEASE_INCLUDES += -I$(strip $(CALC))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(CALC))/include
+RELEASE_INCLUDES += -I$(strip $(GENSUB))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(GENSUB))/include
+RELEASE_INCLUDES += -I$(strip $(STREAMDEVICE))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(STREAMDEVICE))/include
+RELEASE_INCLUDES += -I$(strip $(MODBUS))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(MODBUS))/include
+RELEASE_INCLUDES += -I$(strip $(EPICS_BASE))/include/os/$(OS_CLASS)
+RELEASE_INCLUDES += -I$(strip $(EPICS_BASE))/include
+RELEASE_DBDFLAGS += -I $(strip $(SSCAN))/dbd
+RELEASE_DBDFLAGS += -I $(strip $(SNCSEQ))/dbd
+RELEASE_DBDFLAGS += -I $(strip $(ASYN))/dbd
+RELEASE_DBDFLAGS += -I $(strip $(CALC))/dbd
+RELEASE_DBDFLAGS += -I $(strip $(GENSUB))/dbd
+RELEASE_DBDFLAGS += -I $(strip $(STREAMDEVICE))/dbd
+RELEASE_DBDFLAGS += -I $(strip $(MODBUS))/dbd
+RELEASE_DBDFLAGS += -I $(strip $(EPICS_BASE))/dbd

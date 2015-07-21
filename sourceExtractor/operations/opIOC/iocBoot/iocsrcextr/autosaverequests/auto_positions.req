@@ -1,0 +1,15 @@
+Source:LowSource:Time:History.VAL
+Source:UpSource:Time:History.VAL
+Source:N2UpCathode:Time:History.VAL
+Source:N2UpCathode:Current:History.VAL
+Source:N2UpCathode:Strike:History.VAL
+Source:N2LowCathode:Time:History.VAL
+Source:N2LowCathode:Current:History.VAL
+Source:N2LowCathode:Strike:History.VAL
+Source:N1UpCathode:Time:History.VAL
+Source:N1UpCathode:Current:History.VAL
+Source:N1UpCathode:Strike:History.VAL
+Source:N1LowCathode:Time:History.VAL
+Source:N1LowCathode:Current:History.VAL
+Source:N1LowCathode:Strike:History.VAL
+}
